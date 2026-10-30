@@ -1,0 +1,35 @@
+# Fuzzing lives in its own crate so its tools never ship in arrowmem-core.
+# Run with: cargo +nightly fuzz run open_raw   (and open_flipped)
+[package]
+name = "arrowmem-core-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2024"
+license = "Apache-2.0"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+arrowmem-core = { path = ".." }
+getrandom = "0.4.3"
+p256 = { version = "0.14", features = ["ecdsa"] }
+
+# Keep this crate out of the parent's workspace.
+[workspace]
+members = ["."]
+
+[[bin]]
+name = "open_raw"
+path = "fuzz_targets/open_raw.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "open_flipped"
+path = "fuzz_targets/open_flipped.rs"
+test = false
+doc = false
+bench = false

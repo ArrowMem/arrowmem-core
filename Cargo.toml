@@ -1,0 +1,21 @@
+[package]
+license = "Apache-2.0"
+name = "arrowmem-core"
+version = "0.1.0"
+edition = "2024"
+
+# rlib for Rust users and tests; cdylib and staticlib for the phone app.
+[lib]
+crate-type = ["rlib", "cdylib", "staticlib"]
+
+[dependencies]
+ecdsa = { version = "0.17.0", default-features = false, features = ["der"] }
+getrandom = "0.4.3"
+hkdf = "0.13.0"
+hpke = { version = "0.15", default-features = false, features = ["nistp", "aes", "alloc", "getrandom"] }
+p256 = { version = "0.14", features = ["ecdsa"] }
+sha2 = "0.11.1"
+zeroize = "1.9.1"
+
+[dev-dependencies]
+aes-gcm = "=0.11.1"
