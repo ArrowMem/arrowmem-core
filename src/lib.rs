@@ -81,7 +81,7 @@ pub enum Error {
     TombstonesFull, // 1024 removals; prune by hand
     BadExport,  // a backup export that is malformed, over a cap, or not canonical
     StaleEpoch, // a backup no newer than the one already held
-    NotPaired,  // a vault action that needs the paired channel (and, for reset, his confirmation)
+    NotPaired,  // a vault action that needs the paired channel (and, for reset, their confirmation)
     WrongBackupKey, // signed by a key other than the one registered for this slot
     CounterExhausted, // the send counter reached its maximum; this key can send no more
     RandomFailed, // the operating system could not give random bytes   // an intro that is malformed, for someone else, or carried by the wrong key

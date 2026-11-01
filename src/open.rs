@@ -4,7 +4,7 @@
 use crate::*;
 
 /// THE TRUST BOUNDARY. Bytes from anyone go in; a Verified comes out only if
-/// every check passes. Replay and counter rules are the caller's (step 2).
+/// every check passes. Replay and counter rules are the caller's; this function does not check them.
 pub fn open(object: &[u8], my_sk: &SealPrivateKey, my_pk: &SealPublicKey) -> Result<Verified, Error> {
     // Cheap checks first, before any crypto work.
     if object.len() != OBJECT_SIZE {

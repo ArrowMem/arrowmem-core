@@ -22,7 +22,7 @@ const LOCAL_LABEL: &[u8] = b"arrowmem-core v1 local";
 pub enum Admitted {
     /// A contact's message, after the replay window let it through once.
     Message { from: Key33, counter: u64, body: Vec<u8> },
-    /// A stranger redeemed one of his invites and is now a contact.
+    /// A stranger redeemed one of the user's invites and is now a contact.
     NewContact { from: Key33, first_message: Vec<u8> },
     /// A stranger's request (plain or introduced) is waiting in the inbox.
     Requested { from: Key33 },
@@ -66,7 +66,7 @@ impl Drop for Admission {
 }
 
 impl Admission {
-    /// Make a one-time invite. The app shows the returned secret (with his
+    /// Make a one-time invite. The app shows the returned secret (with the user's
     /// keys) as a QR code or link; only its hash is kept here.
     pub fn new_invite(&mut self) -> Result<[u8; 16], Error> {
         if self.invites.len() >= MAX_OPEN_INVITES {
@@ -87,8 +87,8 @@ impl Admission {
         self.invites.clear();
     }
 
-    /// True if he removed this key before. A removed person may still ask
-    /// again by REQUEST; the app can show this next to it so his
+    /// True if the user removed this key before. A removed person may still ask
+    /// again by REQUEST; the app can show this next to it so the user's
     /// tap is informed. How it is shown is the app's design, not the crate's.
     pub fn was_removed(&self, k: &Key33) -> bool {
         self.removed_highest(k).is_some()
@@ -138,7 +138,7 @@ impl Admission {
         // check_not_old already refused any admitting counter at or below what
         // this key sent before it was removed, so `counter` is above it.
         let seed = counter;
-        // He chose to let this key back in, so its removal mark goes.
+        // The user chose to let this key back in, so its removal mark goes.
         self.state.tombstones.retain(|(t, _)| *t != sign);
         // Any waiting request from this key is now settled.
         self.inbox.accept(&sign);
@@ -241,7 +241,7 @@ impl Admission {
         Ok(Admitted::Requested { from })
     }
 
-    /// He tapped accept. The request's own signed sealing key is the only key used.
+    /// The user tapped accept. The request's own signed sealing key is the only key used.
     pub fn accept_request(&mut self, from: &Key33) -> Result<String, Error> {
         // Blocked since the request arrived: never admit.
         if self.is_blocked(from) {
@@ -255,7 +255,7 @@ impl Admission {
         Ok(text)
     }
 
-    /// Overwrite everything held: who he knows, who he blocked, what strangers
+    /// Overwrite everything held: who the user knows, who they blocked, what strangers
     /// wrote. Replacing self drops the old value, and every part wipes itself.
     pub fn wipe(&mut self) {
         *self = Admission::default();
@@ -349,7 +349,7 @@ impl Admission {
         Ok(Admission { state: state.done(), inbox, invites, request_counters, generation })
     }
 
-    /// He tapped decline. The key stays quiet for the next 128 declines.
+    /// The user tapped decline. The key stays quiet for the next 128 declines.
     pub fn decline_request(&mut self, from: &Key33) {
         self.inbox.decline(from);
         self.request_counters.retain(|(k, _)| k != from);

@@ -462,10 +462,10 @@ macro_rules! key_action {
     };
 }
 
-key_action!(am_accept, "He tapped accept on this key's request.", |a, k| a.accept_request(&k).map(|mut text| {
+key_action!(am_accept, "The user tapped accept on this key's request.", |a, k| a.accept_request(&k).map(|mut text| {
     zeroize::Zeroize::zeroize(&mut text); // the request text, never left in freed heap
 }));
-key_action!(am_decline, "He tapped decline on this key's request.", |a, k| {
+key_action!(am_decline, "The user tapped decline on this key's request.", |a, k| {
     a.decline_request(&k);
     Ok::<(), Error>(())
 });
@@ -784,7 +784,7 @@ mod tests {
 
     #[test]
     fn two_phones_over_ble_c_calls_only() {
-        // What the Sonim test does, start to finish, through the C surface:
+        // What a phone test does, start to finish, through the C surface:
         // invite by QR, new contact, then messages, each over a 182-byte link.
         let (alice, bob) = (handle(), handle());
         let alice_pk = keys_into(alice);
@@ -863,7 +863,7 @@ mod tests {
     #[test]
     fn an_older_blob_with_the_same_counter_is_refused_by_generation() {
         // No seal in between, so only the generation can tell them apart:
-        // the older blob lacks a block he made after it. Loading it would
+        // the older blob lacks a block the user made after it. Loading it would
         // un-block that key.
         let h = handle();
         let old = save(h);

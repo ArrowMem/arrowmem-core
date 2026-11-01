@@ -1,8 +1,8 @@
 //! HF (shortwave) radio: sending and listening, built once, in full.
-//! When he transmits is his call; the code does not hold it back.
+//! The person decides when to transmit; the code does not hold it back.
 //!
 //! Sends carry public signed frames: `send` takes a `PublicFrame`, and a
-//! sealed object cannot become one. When his callsign is set, it is put on
+//! sealed object cannot become one. When a callsign is set, it is put on
 //! every send. Nothing on HF transmits on its own; the caller sends.
 
 use crate::OBJECT_SIZE;
@@ -50,7 +50,7 @@ pub struct HfStation {
 }
 
 impl HfStation {
-    /// His callsign, once he has one. Letters and digits only, 3 to 8 long,
+    /// The callsign, once there is one. Letters and digits only, 3 to 8 long,
     /// at least one digit; stored in capitals.
     pub fn set_callsign(&mut self, call: &str) -> Result<(), HfError> {
         let c = call.trim().to_ascii_uppercase();
